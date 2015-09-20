@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<_SolutionRoot>$(MSBuildThisFileDirectory)</_SolutionRoot>
+		<_CommonDir>$(_SolutionRoot)Common\</_CommonDir>
+	</PropertyGroup>
+	
+	<!-- Configuration-independent properties -->
+	<PropertyGroup>
+		<!-- Strong-naming (yes, versions matter) -->
+		<SignAssembly Condition=" '$(SignAssembly)' == '' ">true</SignAssembly>
+		<AssemblyOriginatorKeyFile Condition=" '$(AssemblyOriginatorKeyFile)' == '' ">$(_CommonDir)DDCloud-Public.snk</AssemblyOriginatorKeyFile>
+		
+		<!-- FxCop -->
+		<CodeAnalysisRuleSet Condition=" '$(CodeAnalysisRuleSet)' == '' ">$(_CommonDir)DD Cloud.ruleset</CodeAnalysisRuleSet>
+
+		<!-- IntelliDoc -->
+		<DocumentationFile Condition=" '$(DocumentationFile)' == '' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+		
+		<!-- Seriously, nobody uses this -->
+		<UseVSHostingProcess Condition=" '$(UseVSHostingProcess)' == '' ">false</UseVSHostingProcess>
+		
+		<!-- C# 6 (not lower, not higher) -->
+		<LangVersion Condition=" '$(LangVersion)' == '' ">6</LangVersion>
+	</PropertyGroup>
+
+	<!-- Release configuration properties -->
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<RunCodeAnalysis>true</RunCodeAnalysis>
+	</PropertyGroup>
+
+	<!-- Common items -->
+	<ItemGroup>
+		<Compile Include="$(_SolutionRoot)SolutionAssemblyInfo.cs">
+			<Link>Properties\SolutionAssemblyInfo.cs</Link>
+		</Compile>
+		<CodeAnalysisDictionary Include="$(_CommonDir)CustomDictionary.xml">
+			<Link>Properties\CustomDictionary.xml</Link>
+		</CodeAnalysisDictionary>
+	</ItemGroup>
+</Project>
